@@ -1,7 +1,8 @@
 # tomatron
 
-> My fantastic app
+Pomodoro Timer on React & Electron.
 
+![React and Electron](/tn/tomatron/raw/master/contents/images/screenshot.png)
 
 ## Dev
 
@@ -20,9 +21,6 @@ $ npm start
 ```
 $ npm run build
 ```
-
-Builds the app for OS X, Linux, and Windows, using [electron-packager](https://github.com/maxogden/electron-packager).
-
 
 ## License
 
