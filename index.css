@@ -1,0 +1,52 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	cursor: default;
+	-webkit-user-select: none;
+}
+
+body {
+	overflow: hidden;
+	background-color: #a3ecff;
+	-webkit-transition: background .3s linear;
+}
+
+body.rest {
+	background-color: #c7ed68;
+}
+
+.timer {
+	padding: 20px 0;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	text-align: center;
+}
+
+time {
+	display: block;
+	font-size: 48px;
+	font-weight: 100;
+	margin-bottom: 10px;
+}
+
+.button {
+	border: 0;
+	border-radius: 4px;
+	background-color: #fff;
+	margin: 0 5px 10px;
+	padding: 3px 5px;
+	cursor: pointer;
+	outline: 0;
+}
+
+.button:focus {
+	box-shadow: 0 0 0 2px #42ade9;
+}
+
+.status {
+	font-size: 10px;
+}
+
+.mode {
+	display: block;
+}

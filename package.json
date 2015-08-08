@@ -1,0 +1,44 @@
+{
+  "name": "tomatron",
+  "productName": "Tomatron",
+  "version": "0.0.0",
+  "description": "My fantastic app",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": "tn/tomatron",
+  "author": {
+    "name": "tn",
+    "email": "t.nurislamov@gmail.com",
+    "url": "nurislamov.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . $npm_package_productName --out=dist --ignore=dist --prune --asar --all --version=0.29.2"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css",
+    "bundle.js",
+    "Icon.png"
+  ],
+  "keywords": [
+    "electron-app"
+  ],
+  "dependencies": {
+    "electron-debug": "^0.1.1"
+  },
+  "devDependencies": {
+    "react": "^0.13.3",
+    "menubar": "^2.0.17",
+    "babelify": "^6.1.3",
+    "browserify": "^11.0.1",
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.29.2",
+    "gulp": "^3.9.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
