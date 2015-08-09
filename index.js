@@ -9,3 +9,7 @@ var mb = menubar({
 mb.on('ready', function ready () {
   // your app code here
 });
+
+mb.on('after-show', function () {
+	mb.window.openDevTools();
+});

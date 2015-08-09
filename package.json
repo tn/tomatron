@@ -1,7 +1,7 @@
 {
   "name": "tomatron",
   "productName": "Tomatron",
-  "version": "0.0.0",
+  "version": "0.0.2-alpha",
   "description": "My fantastic app",
   "license": "MIT",
   "main": "index.js",

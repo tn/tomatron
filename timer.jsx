@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from './button';
 import Clock from './clock';
-import Status from './status';
 import Mode from './mode';
 
 export default class Timer extends React.Component {
@@ -15,19 +14,18 @@ export default class Timer extends React.Component {
       mode: props.mode,
       modesLabels: props.modesLabels,
       countOfRests: props.countOfRests,
-      isStarted: props.isStarted,
-      status: props.statuses[0]
+      isStarted: props.isStarted
     };
 
     this.tick = this.tick.bind(this);
     this.startCountDown = this.startCountDown.bind(this);
     this.pauseCountDown = this.pauseCountDown.bind(this);
     this.resetCountDown = this.resetCountDown.bind(this);
-    this.setStatus = this.setStatus.bind(this);
     this.toggleMode = this.toggleMode.bind(this);
     this.shortRest = this.shortRest.bind(this);
     this.longRest = this.longRest.bind(this);
     this.work = this.work.bind(this);
+    this.shutDown = this.shutDown.bind(this);
   }
 
   tick () {
@@ -53,7 +51,6 @@ export default class Timer extends React.Component {
       this.setState({
         isStarted: true
       });
-      this.setStatus(1);
     }
   }
 
@@ -61,7 +58,6 @@ export default class Timer extends React.Component {
     if (this.state.isStarted) {
       this.componentWillUnmount();
       this.setState({ isStarted: false });
-      this.setStatus(2);
     }
   }
 
@@ -76,7 +72,6 @@ export default class Timer extends React.Component {
       isStarted: false,
       mode: this.state.modes[2]
     });
-    this.setStatus(0);
     document.body.classList.remove('rest');
   }
 
@@ -107,14 +102,15 @@ export default class Timer extends React.Component {
     clearInterval(this.interval);
   }
 
-  setStatus (status) {
-    this.setState({ status: this.props.statuses[status] });
-  }
-
   notify (message) {
     return new Notification('Tomatron', {
       body: message
     });
+  }
+
+  shutDown () {
+    console.log('shutDown');
+    window.close();
   }
 
   render () {
@@ -123,16 +119,16 @@ export default class Timer extends React.Component {
         <Mode label={ this.state.modesLabels[this.state.mode] } />
         <Clock time={ this.state.time } />
         <div className='buttons-group'>
-          <Button onClick={ this.startCountDown } label='Start' icon='icon-play' />
-          <Button onClick={ this.pauseCountDown } label='Pause' icon='icon-pause' />
-          <Button onClick={ this.resetCountDown } label='Reset' icon='icon-reload' />
+          <Button onClick={ this.startCountDown } label='Start' />
+          <Button onClick={ this.pauseCountDown } label='Pause' />
+          <Button onClick={ this.resetCountDown } label='Reset' />
         </div>
         <div className='buttons-group buttons-group--long'>
           <Button onClick={ this.shortRest } label={ this.state.modesLabels[0] } />
           <Button onClick={ this.longRest } label={ this.state.modesLabels[1] } />
           <Button onClick={ this.work } label={ this.state.modesLabels[2] } />
         </div>
-        <Status text={ this.state.status } />
+        <Button onClick={ this.shutDown } label='Quit' />
       </div>
     );
   }
@@ -145,8 +141,7 @@ Timer.propTypes = {
   modes: React.PropTypes.array,
   mode: React.PropTypes.number,
   modesLabels: React.PropTypes.array,
-  isStarted: React.PropTypes.boolean,
-  statuses: React.PropTypes.array
+  isStarted: React.PropTypes.boolean
 };
 
 Timer.defaultProps = {
@@ -156,6 +151,5 @@ Timer.defaultProps = {
   modes: [ 0, 1, 2 ],
   mode: 2,
   modesLabels: [ 'Short Rest', 'Long Rest', 'Work' ],
-  isStarted: false,
-  statuses: [ 'Off', 'On', 'Pause', 'End' ]
+  isStarted: false
 };
