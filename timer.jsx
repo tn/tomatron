@@ -1,155 +1,154 @@
 import React from 'react';
 import Button from './button';
 import Clock from './clock';
-import Mode from './mode';
 
 export default class Timer extends React.Component {
   constructor (props) {
     super(props);
 
     this.state = {
-      times: props.times,
-      time: props.times[2],
-      modes: props.modes,
+      time: props.time,
       mode: props.mode,
-      modesLabels: props.modesLabels,
-      countOfRests: props.countOfRests,
+      countOfBreaks: props.countOfBreaks,
       isStarted: props.isStarted
     };
 
-    this.tick = this.tick.bind(this);
-    this.startCountDown = this.startCountDown.bind(this);
-    this.pauseCountDown = this.pauseCountDown.bind(this);
-    this.resetCountDown = this.resetCountDown.bind(this);
-    this.toggleMode = this.toggleMode.bind(this);
-    this.shortRest = this.shortRest.bind(this);
-    this.longRest = this.longRest.bind(this);
-    this.work = this.work.bind(this);
-    this.shutDown = this.shutDown.bind(this);
+    this.events = {
+      end: new Event('onCountDownEnd')
+    }
+
+    window.addEventListener('onCountDownEnd', this.toggleMode.bind(this));
   }
 
   tick () {
-    if (this.state.time > 0) {
-      this.setState({ time: this.state.time - 1 });
-    } else if (this.state.countOfRests % 2 !== 0 && this.state.mode === 2 || this.state.countOfRests === 0) {
-      this.notify('Work Time is off!');
-      this.shortRest();
-      this.setState({ countOfRests: this.state.countOfRests + 1 });
-    } else if (this.state.countOfRests % 2 === 0 && this.state.mode === 2 && this.state.countOfRests > 0) {
-      this.notify('Work Time is off!');
-      this.longRest();
-      this.setState({ countOfRests: this.state.countOfRests + 1 });
-    } else if (this.state.mode !== 2 ) {
-      this.notify('Time to Work!');
+    this.state.time > 0 ? this.decrementTime() : this.stopCountDown();
+  }
+
+  toggleCountDown () {
+    this.state.isStarted ? this.pauseCountDown() : this.startCountDown();
+  }
+
+  startCountDown () {
+    this.interval = setInterval(this.tick.bind(this), 1000);
+    this.setState({ isStarted: true });
+    document.body.classList.add('tick');
+  }
+
+  pauseCountDown () {
+    clearInterval(this.interval);
+    this.setState({ isStarted: false });
+    document.body.classList.remove('tick');
+  }
+
+  stopCountDown () {
+    this.pauseCountDown();
+    window.dispatchEvent(this.events.end);
+  }
+
+  toggleMode () {
+    this.pauseCountDown();
+    let count = this.state.countOfBreaks;
+    let currentMode = this.state.mode;
+
+    if (currentMode == this.props.modes.work && count % 2 != 0 || count == 0) {
+      this.notify(this.props.notifications.workEnd);
+      this.shortBreak();
+    } else if (currentMode == this.props.modes.work && count % 2 == 0 && count != 0) {
+      this.notify(this.props.notifications.workEnd);
+      this.longBreak();
+    } else if (currentMode == this.props.modes.break || currentMode == this.props.modes.longBreak) {
+      this.notify(this.props.notifications.breakEnd);
       this.work();
     }
   }
 
-  startCountDown () {
-    if (!this.state.isStarted) {
-      this.interval = setInterval(this.tick, 1000);
-      this.setState({
-        isStarted: true
-      });
-    }
-  }
+  shortBreak () {
+    this.incrementBreaksCount();
 
-  pauseCountDown () {
-    if (this.state.isStarted) {
-      this.componentWillUnmount();
-      this.setState({ isStarted: false });
-    }
-  }
-
-  resetCountDown () {
-    if (this.state.isStarted) {
-      this.pauseCountDown();
-    }
-
-    this.componentWillUnmount();
     this.setState({
-      time: this.state.times[2],
-      isStarted: false,
-      mode: this.state.modes[2]
+      time: this.props.times[0],
+      mode: this.props.modes.break
     });
-    document.body.classList.remove('rest');
+
+    document.body.classList.add('break');
   }
 
-  toggleMode (mode) {
-    this.resetCountDown();
+  longBreak () {
+    this.incrementBreaksCount();
+
     this.setState({
-      mode: mode,
-      time: this.state.times[mode]
+      time: this.props.times[1],
+      mode: this.props.modes.longBreak
     });
-  }
 
-  shortRest () {
-    this.toggleMode(0);
-    document.body.classList.add('rest');
-  }
-
-  longRest () {
-    this.toggleMode(1);
-    document.body.classList.add('rest');
+    document.body.classList.add('break');
   }
 
   work () {
-    this.toggleMode(2);
-    document.body.classList.remove('rest');
+    this.setState({
+      time: this.props.times[2],
+      mode: this.props.modes.work
+    });
+
+    document.body.classList.remove('break');
   }
 
-  componentWillUnmount () {
-    clearInterval(this.interval);
+  decrementTime () {
+    this.setState({ time: this.state.time - 1 });
+  }
+
+  incrementBreaksCount () {
+    this.setState({ countOfBreaks: this.state.countOfBreaks + 1 });
   }
 
   notify (message) {
-    return new Notification('Tomatron', {
+    return new Notification(this.props.appName, {
       body: message
     });
   }
 
   shutDown () {
-    console.log('shutDown');
     window.close();
   }
 
   render () {
     return (
       <div className='timer'>
-        <Mode label={ this.state.modesLabels[this.state.mode] } />
         <Clock time={ this.state.time } />
         <div className='buttons-group'>
-          <Button onClick={ this.startCountDown } label='Start' />
-          <Button onClick={ this.pauseCountDown } label='Pause' />
-          <Button onClick={ this.resetCountDown } label='Reset' />
+          <Button onClick={ this.toggleCountDown.bind(this) } label={ this.state.isStarted ? 'Pause' : 'Start' } />
+          <Button onClick={ this.toggleMode.bind(this) } label={ this.state.mode == this.props.modes.work ? 'Break' : 'Work' } />
         </div>
-        <div className='buttons-group buttons-group--long'>
-          <Button onClick={ this.shortRest } label={ this.state.modesLabels[0] } />
-          <Button onClick={ this.longRest } label={ this.state.modesLabels[1] } />
-          <Button onClick={ this.work } label={ this.state.modesLabels[2] } />
-        </div>
-        <Button onClick={ this.shutDown } label='Quit' />
       </div>
     );
   }
 }
 
 Timer.propTypes = {
+  appName: React.PropTypes.string,
   times: React.PropTypes.array,
   time: React.PropTypes.number,
-  countOfRests: React.PropTypes.number,
-  modes: React.PropTypes.array,
+  countOfBreaks: React.PropTypes.number,
+  modes: React.PropTypes.object,
   mode: React.PropTypes.number,
-  modesLabels: React.PropTypes.array,
-  isStarted: React.PropTypes.boolean
+  isStarted: React.PropTypes.bool,
+  notifications: React.PropTypes.object
 };
 
 Timer.defaultProps = {
+  appName: 'Tomatron',
   times: [ 300, 900, 1500 ], // Seconds
   time: 1500,
-  countOfRests: 0,
-  modes: [ 0, 1, 2 ],
-  mode: 2,
-  modesLabels: [ 'Short Rest', 'Long Rest', 'Work' ],
-  isStarted: false
+  countOfBreaks: 0,
+  modes: {
+    break: 'break',
+    longBreak: 'long_break',
+    work: 'work'
+  },
+  mode: 'work',
+  isStarted: false,
+  notifications: {
+    breakEnd: 'Time to work. Concentrate!',
+    workEnd: 'Work time is off. Take a cup of tea :)'
+  }
 };

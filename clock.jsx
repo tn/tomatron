@@ -9,8 +9,8 @@ export default class Clock extends React.Component {
     let rawSeconds = this.props.time;
     let rawMinutes = rawSeconds % (60 * 60);
     let minutes = Math.floor(rawMinutes / 60);
-    let tempSecs = rawMinutes % 60;
-    let seconds = Math.ceil(tempSecs);
+    let tempSeconds = rawMinutes % 60;
+    let seconds = Math.ceil(tempSeconds);
     seconds = seconds < 10 ? `0${seconds}` : seconds;
 
     return `${minutes}:${seconds}`;

@@ -8,45 +8,90 @@ body {
 
 body {
 	overflow: hidden;
-	background-color: #a3ecff;
+	background-color: #fff;
 	-webkit-transition: background .3s linear;
 }
 
-body.rest {
-	background-color: #c7ed68;
+body.break .clock {
+	color: #80D676;
+}
+
+body.tick .clock::before {
+	-webkit-animation-name: rotate;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+}
+
+body.break .clock::before {
+	background: linear-gradient(to bottom, #80D676 0%,#000 100%);
+}
+
+.clock {
+	position: relative;
+	display: block;
+	margin: 0 auto 16px;
+	width: 124px;
+	height: 124px;
+	border-radius: 50%;
+	overflow: hidden;
+	font-size: 36px;
+	font-weight: 100;
+	line-height: 122px;
+	text-align: center;
+	color: #ef233c;
+}
+
+.clock::before {
+	content: '';
+	display: block;
+	position: absolute;
+	background: linear-gradient(to bottom, #ef233c 0%,#000 100%);
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+
+.clock::after {
+	content: '';
+	display: block;
+	position: absolute;
+	background-color: #fff;
+	width: 122px;
+	height: 122px;
+	border-radius: 50%;
+	top: 1px;
+	left: 1px;
+	z-index: -1;
+	-webkit-transition: all 1s ease-in;
 }
 
 .timer {
-	padding: 20px 0;
+	padding: 30px 0;
 	font-family: 'Helvetica Neue', Helvetica, sans-serif;
 	text-align: center;
 }
 
-time {
-	display: block;
-	font-size: 48px;
-	font-weight: 100;
-	margin-bottom: 10px;
-}
-
 .button {
 	border: 0;
-	border-radius: 4px;
-	background-color: #fff;
+	background-color: transparent;
+	font-size: 16px;
+	color: #2B2D42;
+	font-weight: 300;
 	margin: 0 5px 10px;
 	padding: 3px 5px;
-	cursor: pointer;
 	outline: 0;
 }
 
-.button:focus {
-	box-shadow: 0 0 0 2px #42ade9;
-}
+@-webkit-keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
 
-.status {
-	font-size: 10px;
-}
-
-.mode {
-	display: block;
+	to {
+		transform: rotate(360deg);
+	}
 }
