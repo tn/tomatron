@@ -2,6 +2,8 @@ import React from 'react';
 import Button from './button';
 import Clock from './clock';
 
+var config = require('../../config');
+
 export default class Timer extends React.Component {
   constructor (props) {
     super(props);
@@ -16,6 +18,8 @@ export default class Timer extends React.Component {
     this.events = {
       end: new Event('onCountDownEnd')
     }
+
+    this.audio = new Audio(config.path.sound);
 
     window.addEventListener('onCountDownEnd', this.toggleMode.bind(this));
   }
@@ -102,7 +106,9 @@ export default class Timer extends React.Component {
   }
 
   notify (message) {
-    return new Notification(this.props.appName, {
+    this.audio.play();
+
+    new Notification(this.props.appName, {
       body: message
     });
   }

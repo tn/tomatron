@@ -1,8 +1,8 @@
 {
   "name": "tomatron",
   "productName": "Tomatron",
-  "version": "0.0.2-alpha",
-  "description": "My fantastic app",
+  "version": "0.0.1-beta",
+  "description": "Pomodoro Timer",
   "license": "MIT",
   "main": "index.js",
   "repository": "tn/tomatron",
@@ -23,7 +23,7 @@
     "index.html",
     "index.css",
     "bundle.js",
-    "Icon.png"
+    "Icon.icns"
   ],
   "keywords": [
     "electron-app"
