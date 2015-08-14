@@ -20,10 +20,7 @@
   },
   "files": [
     "index.js",
-    "index.html",
-    "index.css",
-    "bundle.js",
-    "Icon.icns"
+    "index.html"
   ],
   "keywords": [
     "electron-app"
