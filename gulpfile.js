@@ -3,12 +3,14 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 
+var config = require('./config');
+
 gulp.task('build', function () {
-    return browserify({entries: './app.jsx', extensions: ['.jsx'], debug: true})
+    return browserify({entries: config.path.app_file, extensions: ['.jsx'], debug: true})
         .transform(babelify)
         .bundle()
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./'));
+        .pipe(source(config.path.bundle_file))
+        .pipe(gulp.dest(config.path.dist));
 });
 
 gulp.task('watch', ['build'], function () {

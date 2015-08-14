@@ -1,8 +1,8 @@
 {
   "name": "tomatron",
   "productName": "Tomatron",
-  "version": "0.0.2-alpha",
-  "description": "My fantastic app",
+  "version": "0.0.1-beta",
+  "description": "Pomodoro Timer",
   "license": "MIT",
   "main": "index.js",
   "repository": "tn/tomatron",
@@ -20,17 +20,14 @@
   },
   "files": [
     "index.js",
-    "index.html",
-    "index.css",
-    "bundle.js",
-    "Icon.png"
+    "index.html"
   ],
   "keywords": [
     "electron-app"
   ],
   "dependencies": {
-    "menubar": "^2.0.17",
-    "electron-debug": "^0.1.1"
+    "electron-debug": "^0.1.1",
+    "menubar": "^2.0.17"
   },
   "devDependencies": {
     "react": "^0.13.3",

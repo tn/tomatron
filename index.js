@@ -1,15 +1,24 @@
 var menubar = require('menubar');
+var config = require('./config');
 
 var mb = menubar({
-	width: 180,
-	height: 220,
-	preloadWindow: true
+	width: config.app.width,
+	height: config.app.height,
+	preloadWindow: true,
+	icon: __dirname + config.path.icons.default
 });
 
-mb.on('ready', function ready () {
-  // your app code here
+mb.on('ready', function () {
+	mb.tray.setToolTip(config.app.name);
+	mb.tray.setPressedImage(__dirname + config.path.icons.pressed);
+
+	mb.app.on('window-all-closed', function() {
+	  mb.app.quit();
+	});
 });
 
-mb.on('after-show', function () {
-	mb.window.openDevTools();
-});
+if (config.debug) {
+	mb.on('after-show', function () {
+		mb.window.openDevTools();
+	});
+}
