@@ -2,7 +2,7 @@
 
 Pomodoro Timer on React & Electron.
 
-![React and Electron](/contents/images/screenshot.png)
+![React and Electron](/contents/images/screenshot2.png)
 
 ## Dev
 
