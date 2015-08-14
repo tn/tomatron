@@ -11,6 +11,10 @@ var mb = menubar({
 mb.on('ready', function () {
 	mb.tray.setToolTip(config.app.name);
 	mb.tray.setPressedImage(__dirname + config.path.icons.pressed);
+
+	mb.app.on('window-all-closed', function() {
+	  mb.app.quit();
+	});
 });
 
 if (config.debug) {

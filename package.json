@@ -29,8 +29,8 @@
     "electron-app"
   ],
   "dependencies": {
-    "menubar": "^2.0.17",
-    "electron-debug": "^0.1.1"
+    "electron-debug": "^0.1.1",
+    "menubar": "^2.0.17"
   },
   "devDependencies": {
     "react": "^0.13.3",

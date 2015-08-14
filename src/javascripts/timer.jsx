@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from './button';
 import Clock from './clock';
+import Close from './close';
 
 var config = require('../../config');
 
@@ -120,6 +121,7 @@ export default class Timer extends React.Component {
   render () {
     return (
       <div className='timer'>
+        <Close onClick={ this.shutDown.bind(this) } />
         <Clock time={ this.state.time } />
         <div className='buttons-group'>
           <Button onClick={ this.toggleCountDown.bind(this) } label={ this.state.isStarted ? 'Pause' : 'Start' } />
