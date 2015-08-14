@@ -19,5 +19,5 @@ module.exports = {
     height: 220
   },
 
-  debug: true
+  debug: false
 }
